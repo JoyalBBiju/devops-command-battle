@@ -4,569 +4,196 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DevOps Command Battle</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Courier New', monospace;
-            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-        }
-
-        .container {
-            background: #0d1b2a;
-            border: 2px solid #00ff00;
-            border-radius: 10px;
-            padding: 40px;
-            max-width: 800px;
-            width: 100%;
-            box-shadow: 0 0 20px rgba(0, 255, 0, 0.3);
-        }
-
-        .header {
-            text-align: center;
-            margin-bottom: 40px;
-        }
-
-        .title {
-            font-size: 2.5em;
-            color: #00ff00;
-            text-shadow: 0 0 10px #00ff00;
-            margin-bottom: 10px;
-            font-weight: bold;
-            letter-spacing: 2px;
-        }
-
-        .subtitle {
-            color: #00cc00;
-            font-size: 1em;
-            opacity: 0.8;
-        }
-
-        .score-display {
-            background: rgba(0, 255, 0, 0.1);
-            border: 1px solid #00ff00;
-            padding: 15px;
-            border-radius: 5px;
-            margin-bottom: 30px;
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-        }
-
-        .score-item {
-            text-align: center;
-        }
-
-        .score-label {
-            color: #00cc00;
-            font-size: 0.9em;
-            margin-bottom: 5px;
-        }
-
-        .score-value {
-            color: #00ff00;
-            font-size: 1.8em;
-            font-weight: bold;
-            text-shadow: 0 0 5px #00ff00;
-        }
-
-        .challenge-section {
-            margin-bottom: 30px;
-        }
-
-        .challenge-label {
-            color: #00ff00;
-            font-size: 0.9em;
-            margin-bottom: 10px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .problem-display {
-            background: rgba(0, 0, 0, 0.5);
-            border: 1px solid #00ff00;
-            border-radius: 5px;
-            padding: 20px;
-            margin-bottom: 20px;
-            min-height: 100px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .problem-text {
-            color: #00ff00;
-            font-size: 1.1em;
-            line-height: 1.6;
-        }
-
-        .difficulty-level {
-            display: inline-block;
-            padding: 5px 10px;
-            background: rgba(0, 255, 0, 0.2);
-            border: 1px solid #00ff00;
-            border-radius: 3px;
-            color: #00ff00;
-            font-size: 0.8em;
-            margin-top: 10px;
-        }
-
-        .input-section {
-            margin-bottom: 20px;
-        }
-
-        .input-label {
-            color: #00ff00;
-            font-size: 0.9em;
-            margin-bottom: 8px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .command-input {
-            width: 100%;
-            padding: 15px;
-            background: rgba(0, 0, 0, 0.7);
-            border: 2px solid #00ff00;
-            border-radius: 5px;
-            color: #00ff00;
-            font-family: 'Courier New', monospace;
-            font-size: 1em;
-            outline: none;
-            transition: all 0.3s ease;
-        }
-
-        .command-input:focus {
-            border-color: #00ff00;
-            box-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
-        }
-
-        .command-input::placeholder {
-            color: #006600;
-        }
-
-        .button-group {
-            display: flex;
-            gap: 15px;
-            margin-bottom: 20px;
-        }
-
-        .btn {
-            flex: 1;
-            padding: 12px 20px;
-            border: 2px solid #00ff00;
-            background: rgba(0, 255, 0, 0.1);
-            color: #00ff00;
-            font-family: 'Courier New', monospace;
-            font-size: 1em;
-            font-weight: bold;
-            cursor: pointer;
-            border-radius: 5px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            transition: all 0.3s ease;
-            text-shadow: 0 0 5px #00ff00;
-        }
-
-        .btn:hover {
-            background: rgba(0, 255, 0, 0.3);
-            box-shadow: 0 0 15px rgba(0, 255, 0, 0.5);
-            transform: translateY(-2px);
-        }
-
-        .btn:active {
-            transform: translateY(0);
-        }
-
-        .btn-secondary {
-            background: rgba(100, 100, 255, 0.1);
-            border-color: #6464ff;
-            color: #6464ff;
-            text-shadow: 0 0 5px #6464ff;
-        }
-
-        .btn-secondary:hover {
-            background: rgba(100, 100, 255, 0.3);
-            box-shadow: 0 0 15px rgba(100, 100, 255, 0.5);
-        }
-
-        .feedback {
-            padding: 15px;
-            border-radius: 5px;
-            margin-bottom: 20px;
-            text-align: center;
-            font-weight: bold;
-            min-height: 50px;
-            display: none;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .feedback.show {
-            display: flex;
-        }
-
-        .feedback.success {
-            background: rgba(0, 255, 0, 0.2);
-            border: 2px solid #00ff00;
-            color: #00ff00;
-        }
-
-        .feedback.error {
-            background: rgba(255, 0, 0, 0.2);
-            border: 2px solid #ff0000;
-            color: #ff0000;
-        }
-
-        .challenge-counter {
-            color: #00cc00;
-            font-size: 0.9em;
-            margin-top: 15px;
-            text-align: center;
-        }
-
-        .hint {
-            background: rgba(100, 100, 255, 0.1);
-            border-left: 3px solid #6464ff;
-            padding: 10px 15px;
-            border-radius: 3px;
-            color: #6464ff;
-            font-size: 0.9em;
-            margin-top: 15px;
-        }
-
-        .loading {
-            color: #00ff00;
-            text-align: center;
-            animation: pulse 1s infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
-        }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="container">
-        <!-- Header -->
-        <div class="header">
-            <div class="title">⚡ DevOps Command Battle ⚡</div>
-            <div class="subtitle">Master Linux & DevOps Commands to Win!</div>
-        </div>
-
-        <!-- Score Display -->
-        <div class="score-display">
-            <div class="score-item">
-                <div class="score-label">Score</div>
-                <div class="score-value" id="score">0</div>
-            </div>
-            <div class="score-item">
-                <div class="score-label">Streak</div>
-                <div class="score-value" id="streak">0</div>
-            </div>
-            <div class="score-item">
-                <div class="score-label">Level</div>
-                <div class="score-value" id="level">1</div>
-            </div>
-            <div class="score-item">
-                <div class="score-label">Accuracy</div>
-                <div class="score-value" id="accuracy">0%</div>
-            </div>
-        </div>
-
-        <!-- Feedback Message -->
-        <div class="feedback" id="feedback"></div>
-
-        <!-- Challenge Section -->
-        <div class="challenge-section">
-            <div class="challenge-label">📋 Current Challenge</div>
-            <div class="problem-display">
-                <div class="problem-text" id="problem">
-                    Welcome to DevOps Command Battle!<br><br>
-                    Your first challenge will appear here. Click "Start Challenge" to begin!
+        <!-- ============= LANDING PAGE ============= -->
+        <div class="landing-page" id="landingPage">
+            <div class="landing-header">
+                <div class="landing-title">⚡ DevOps Command Battle ⚡</div>
+                <div class="landing-subtitle">Master Linux & DevOps Commands to Win!</div>
+                <div class="landing-description">
+                    Join the ultimate challenge! Test your DevOps knowledge, master command-line tools, and compete for the highest scores. 
+                    Select your difficulty level and start your journey to becoming a DevOps legend!
                 </div>
             </div>
-            <div id="difficultyContainer"></div>
-            <div class="hint" id="hint" style="display: none;"></div>
+
+            <div style="width: 100%; text-align: center; margin-bottom: 30px;">
+                <h2 style="color: #2B2D42; margin-bottom: 20px; font-size: 1.5em;">Choose Your Difficulty Level</h2>
+            </div>
+
+            <div class="difficulty-selector">
+                <!-- Beginner -->
+                <div class="difficulty-card beginner" onclick="selectDifficulty('Beginner')">
+                    <div class="difficulty-icon">🌱</div>
+                    <div class="difficulty-name">Beginner</div>
+                    <div class="difficulty-details">Perfect for newcomers</div>
+                    <div class="difficulty-stats">
+                        <div class="stat-item">
+                            <div class="stat-label">Questions</div>
+                            <div class="stat-value">5</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-label">x Points</div>
+                            <div class="stat-value">1.0</div>
+                        </div>
+                    </div>
+                    <button class="difficulty-button">Start</button>
+                </div>
+
+                <!-- Intermediate -->
+                <div class="difficulty-card intermediate" onclick="selectDifficulty('Intermediate')">
+                    <div class="difficulty-icon">📚</div>
+                    <div class="difficulty-name">Intermediate</div>
+                    <div class="difficulty-details">For experienced users</div>
+                    <div class="difficulty-stats">
+                        <div class="stat-item">
+                            <div class="stat-label">Questions</div>
+                            <div class="stat-value">8</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-label">x Points</div>
+                            <div class="stat-value">1.5</div>
+                        </div>
+                    </div>
+                    <button class="difficulty-button">Start</button>
+                </div>
+
+                <!-- Advanced -->
+                <div class="difficulty-card advanced" onclick="selectDifficulty('Advanced')">
+                    <div class="difficulty-icon">🔧</div>
+                    <div class="difficulty-name">Advanced</div>
+                    <div class="difficulty-details">Challenge yourself</div>
+                    <div class="difficulty-stats">
+                        <div class="stat-item">
+                            <div class="stat-label">Questions</div>
+                            <div class="stat-value">10</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-label">x Points</div>
+                            <div class="stat-value">2.0</div>
+                        </div>
+                    </div>
+                    <button class="difficulty-button">Start</button>
+                </div>
+
+                <!-- Expert -->
+                <div class="difficulty-card expert" onclick="selectDifficulty('Expert')">
+                    <div class="difficulty-icon">⚙️</div>
+                    <div class="difficulty-name">Expert</div>
+                    <div class="difficulty-details">For the elite</div>
+                    <div class="difficulty-stats">
+                        <div class="stat-item">
+                            <div class="stat-label">Questions</div>
+                            <div class="stat-value">15</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-label">x Points</div>
+                            <div class="stat-value">2.5</div>
+                        </div>
+                    </div>
+                    <button class="difficulty-button">Start</button>
+                </div>
+
+                <!-- Master -->
+                <div class="difficulty-card master" onclick="selectDifficulty('Master')">
+                    <div class="difficulty-icon">👑</div>
+                    <div class="difficulty-name">Master</div>
+                    <div class="difficulty-details">Ultimate challenge</div>
+                    <div class="difficulty-stats">
+                        <div class="stat-item">
+                            <div class="stat-label">Questions</div>
+                            <div class="stat-value">20</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-label">x Points</div>
+                            <div class="stat-value">3.0</div>
+                        </div>
+                    </div>
+                    <button class="difficulty-button">Start</button>
+                </div>
+            </div>
         </div>
 
-        <!-- Input Section -->
-        <div class="input-section">
-            <div class="input-label">💻 Your Command</div>
-            <input 
-                type="text" 
-                class="command-input" 
-                id="commandInput" 
-                placeholder="Enter your DevOps command here..."
-                disabled
-            >
-        </div>
+        <!-- ============= GAME PAGE ============= -->
+        <div class="game-page" id="gamePage">
+            <!-- Header -->
+            <div class="header">
+                <div class="title">⚡ DevOps Command Battle ⚡</div>
+                <div class="subtitle">Difficulty: <span id="currentDifficulty">Beginner</span></div>
+            </div>
 
-        <!-- Buttons -->
-        <div class="button-group">
-            <button class="btn" id="submitBtn" disabled>Submit Answer</button>
-            <button class="btn btn-secondary" id="hintBtn" disabled>Get Hint</button>
-            <button class="btn btn-secondary" id="skipBtn" disabled>Skip Challenge</button>
-        </div>
+            <!-- Score Display -->
+            <div class="score-display">
+                <div class="score-item">
+                    <div class="score-label">Score</div>
+                    <div class="score-value" id="score">0</div>
+                </div>
+                <div class="score-item">
+                    <div class="score-label">Streak</div>
+                    <div class="score-value" id="streak">0</div>
+                </div>
+                <div class="score-item">
+                    <div class="score-label">Level</div>
+                    <div class="score-value" id="level">1</div>
+                </div>
+                <div class="score-item">
+                    <div class="score-label">Accuracy</div>
+                    <div class="score-value" id="accuracy">0%</div>
+                </div>
+            </div>
 
-        <div class="challenge-counter">
-            <span id="challengeCounter">Ready to start? Press Start Challenge!</span>
-        </div>
+            <!-- Feedback Message -->
+            <div class="feedback" id="feedback"></div>
 
-        <div style="text-align: center; margin-top: 20px;">
-            <button class="btn" id="startBtn">Start Challenge</button>
+            <!-- Challenge Section -->
+            <div class="challenge-section">
+                <div class="challenge-label">📋 Current Challenge</div>
+                <div class="problem-display">
+                    <div class="problem-text" id="problem">
+                        Welcome to DevOps Command Battle!<br><br>
+                        Your first challenge will appear here. Click "Start Game" to begin!
+                    </div>
+                </div>
+                <div id="difficultyContainer"></div>
+                <div class="hint" id="hint" style="display: none;"></div>
+            </div>
+
+            <!-- Input Section -->
+            <div class="input-section">
+                <div class="input-label">💻 Your Command</div>
+                <input 
+                    type="text" 
+                    class="command-input" 
+                    id="commandInput" 
+                    placeholder="Enter your DevOps command here..."
+                    disabled
+                >
+            </div>
+
+            <!-- Buttons -->
+            <div class="button-group">
+                <button class="btn" id="submitBtn" disabled>Submit Answer</button>
+                <button class="btn btn-secondary" id="hintBtn" disabled>Get Hint</button>
+                <button class="btn btn-secondary" id="skipBtn" disabled>Skip Challenge</button>
+                <button class="btn btn-secondary" id="backBtn">Back to Menu</button>
+            </div>
+
+            <div class="challenge-counter">
+                <span id="challengeCounter">Ready to start? Press Start Game!</span>
+            </div>
+
+            <div style="text-align: center; margin-top: 20px;">
+                <button class="btn" id="startBtn">Start Game</button>
+            </div>
         </div>
     </div>
 
-    <script>
-        // Game State
-        const gameState = {
-            score: 0,
-            streak: 0,
-            maxStreak: 0,
-            level: 1,
-            totalAttempts: 0,
-            correctAnswers: 0,
-            currentChallenge: null,
-            gameActive: false
-        };
-
-        // DevOps Challenges
-        const challenges = [
-            {
-                id: 1,
-                difficulty: 'Easy',
-                question: 'List all files in the current directory including hidden files',
-                answer: ['ls -a', 'ls -la', 'ls -lah'],
-                hint: 'Use ls with the "-a" flag to show hidden files'
-            },
-            {
-                id: 2,
-                difficulty: 'Easy',
-                question: 'Print the current working directory path',
-                answer: ['pwd'],
-                hint: 'pwd stands for Print Working Directory'
-            },
-            {
-                id: 3,
-                difficulty: 'Easy',
-                question: 'Change to the home directory',
-                answer: ['cd ~', 'cd', 'cd $HOME'],
-                hint: 'Use cd with ~ or no arguments'
-            },
-            {
-                id: 4,
-                difficulty: 'Medium',
-                question: 'Find all files with ".log" extension in the current directory and subdirectories',
-                answer: ['find . -name "*.log"', "find . -name '*.log'"],
-                hint: 'Use the find command with -name and wildcard pattern'
-            },
-            {
-                id: 5,
-                difficulty: 'Medium',
-                question: 'Display the contents of a file named "config.txt"',
-                answer: ['cat config.txt'],
-                hint: 'Use the cat command to display file contents'
-            },
-            {
-                id: 6,
-                difficulty: 'Medium',
-                question: 'Change permissions to make a file executable',
-                answer: ['chmod +x filename', 'chmod 755 filename'],
-                hint: 'Use chmod command with +x flag'
-            },
-            {
-                id: 7,
-                difficulty: 'Hard',
-                question: 'Search for a string "ERROR" in all .log files recursively',
-                answer: ['grep -r "ERROR" *.log', 'grep -r ERROR *.log', 'find . -name "*.log" -exec grep "ERROR" {} \\;'],
-                hint: 'Use grep with -r flag for recursive search'
-            },
-            {
-                id: 8,
-                difficulty: 'Hard',
-                question: 'Count the number of lines in a file "data.txt"',
-                answer: ['wc -l data.txt'],
-                hint: 'Use wc command with -l flag (lines)'
-            },
-            {
-                id: 9,
-                difficulty: 'Hard',
-                question: 'Create a compressed archive of a folder named "myproject"',
-                answer: ['tar -czf myproject.tar.gz myproject', 'tar -cf myproject.tar myproject'],
-                hint: 'Use tar command with -c flag to create archive'
-            },
-            {
-                id: 10,
-                difficulty: 'Expert',
-                question: 'List all processes running on the system with detailed information',
-                answer: ['ps aux', 'ps -ef'],
-                hint: 'Use ps command with aux or -ef flags'
-            }
-        ];
-
-        // DOM Elements
-        const problemDisplay = document.getElementById('problem');
-        const commandInput = document.getElementById('commandInput');
-        const submitBtn = document.getElementById('submitBtn');
-        const hintBtn = document.getElementById('hintBtn');
-        const skipBtn = document.getElementById('skipBtn');
-        const startBtn = document.getElementById('startBtn');
-        const feedback = document.getElementById('feedback');
-        const scoreDisplay = document.getElementById('score');
-        const streakDisplay = document.getElementById('streak');
-        const levelDisplay = document.getElementById('level');
-        const accuracyDisplay = document.getElementById('accuracy');
-        const challengeCounter = document.getElementById('challengeCounter');
-        const hintElement = document.getElementById('hint');
-        const difficultyContainer = document.getElementById('difficultyContainer');
-
-        // Event Listeners
-        startBtn.addEventListener('click', startChallenge);
-        submitBtn.addEventListener('click', checkAnswer);
-        hintBtn.addEventListener('click', showHint);
-        skipBtn.addEventListener('click', skipCurrentChallenge);
-        commandInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter' && !submitBtn.disabled) {
-                checkAnswer();
-            }
-        });
-
-        // Functions
-        function startChallenge() {
-            gameState.gameActive = true;
-            startBtn.style.display = 'none';
-            loadNextChallenge();
-            updateUI();
-        }
-
-        function loadNextChallenge() {
-            // Reset input and feedback
-            commandInput.value = '';
-            feedback.classList.remove('show', 'success', 'error');
-            hintElement.style.display = 'none';
-
-            // Select random challenge
-            gameState.currentChallenge = challenges[Math.floor(Math.random() * challenges.length)];
-
-            // Update difficulty level based on streak
-            if (gameState.streak >= 5) {
-                gameState.level = Math.min(3, Math.floor(gameState.streak / 5) + 1);
-            }
-
-            // Display challenge
-            displayChallenge();
-
-            // Enable input and buttons
-            commandInput.disabled = false;
-            submitBtn.disabled = false;
-            hintBtn.disabled = false;
-            skipBtn.disabled = false;
-            commandInput.focus();
-        }
-
-        function displayChallenge() {
-            if (!gameState.currentChallenge) return;
-
-            const challenge = gameState.currentChallenge;
-            problemDisplay.textContent = challenge.question;
-            
-            difficultyContainer.innerHTML = `<div class="difficulty-level">Difficulty: ${challenge.difficulty}</div>`;
-            challengeCounter.textContent = `Challenge #${challenge.id} | Level ${gameState.level}`;
-        }
-
-        function checkAnswer() {
-            if (!gameState.currentChallenge) return;
-
-            const userAnswer = commandInput.value.trim().toLowerCase();
-            const correctAnswers = gameState.currentChallenge.answer.map(a => a.toLowerCase());
-
-            gameState.totalAttempts++;
-
-            if (correctAnswers.includes(userAnswer)) {
-                handleCorrectAnswer();
-            } else {
-                handleIncorrectAnswer();
-            }
-
-            updateUI();
-        }
-
-        function handleCorrectAnswer() {
-            gameState.score += 10 + (gameState.level * 5);
-            gameState.streak++;
-            gameState.correctAnswers++;
-
-            feedback.textContent = `✓ Correct! +${10 + (gameState.level * 5)} points`;
-            feedback.classList.add('show', 'success');
-
-            // Disable input temporarily
-            commandInput.disabled = true;
-            submitBtn.disabled = true;
-            hintBtn.disabled = true;
-
-            // Show next button
-            setTimeout(() => {
-                submitBtn.textContent = 'Next Challenge →';
-                submitBtn.disabled = false;
-                submitBtn.onclick = () => {
-                    submitBtn.textContent = 'Submit Answer';
-                    submitBtn.onclick = null;
-                    loadNextChallenge();
-                };
-            }, 500);
-        }
-
-        function handleIncorrectAnswer() {
-            gameState.streak = 0;
-            feedback.textContent = '✗ Incorrect! Try again or get a hint.';
-            feedback.classList.add('show', 'error');
-            commandInput.value = '';
-            commandInput.focus();
-        }
-
-        function showHint() {
-            if (!gameState.currentChallenge) return;
-            hintElement.textContent = `💡 Hint: ${gameState.currentChallenge.hint}`;
-            hintElement.style.display = 'block';
-            gameState.score = Math.max(0, gameState.score - 5);
-            hintBtn.disabled = true;
-            updateUI();
-        }
-
-        function skipCurrentChallenge() {
-            gameState.streak = 0;
-            feedback.textContent = '⊘ Challenge skipped. Moving to next...';
-            feedback.classList.add('show', 'error');
-            
-            setTimeout(() => {
-                loadNextChallenge();
-            }, 1000);
-        }
-
-        function updateUI() {
-            scoreDisplay.textContent = gameState.score;
-            streakDisplay.textContent = gameState.streak;
-            levelDisplay.textContent = gameState.level;
-            
-            const accuracy = gameState.totalAttempts > 0 
-                ? Math.round((gameState.correctAnswers / gameState.totalAttempts) * 100) 
-                : 0;
-            accuracyDisplay.textContent = accuracy + '%';
-        }
-
-        // Initialize
-        updateUI();
-    </script>
+    <!-- Scripts -->
+    <script src="script.js"></script>
+    <script src="game.js"></script>
+    <script src="scoring.js"></script>
+    <script src="landing.js"></script>
 </body>
 </html>
