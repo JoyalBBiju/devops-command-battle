@@ -1,5 +1,5 @@
 /* =====================================================
-   DevOps Command Battle - Updated Stylesheet with New Colors
+   DevOps Command Battle - Updated Stylesheet with Responsive Aspect Ratio
    ===================================================== */
 
 /* ============= ROOT VARIABLES ============= */
@@ -93,10 +93,19 @@ body {
     border: 2px solid rgba(255, 214, 232, 0.5);
     border-radius: 20px;
     padding: 40px;
-    max-width: 900px;
+    max-width: 1200px;
     width: 100%;
     box-shadow: var(--box-shadow-primary);
     animation: slideIn 0.5s ease-out;
+    
+    /* 16:9 Aspect Ratio on Desktop (min-width 1024px) */
+    @media (min-width: 1024px) {
+        aspect-ratio: 16 / 9;
+        display: flex;
+        flex-direction: column;
+        overflow-y: auto;
+        max-height: 90vh;
+    }
 }
 
 @keyframes slideIn {
@@ -117,6 +126,7 @@ body {
     align-items: center;
     justify-content: center;
     min-height: 80vh;
+    width: 100%;
 }
 
 .landing-page.hidden {
@@ -125,10 +135,14 @@ body {
 
 .game-page {
     display: none;
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
 }
 
 .game-page.active {
-    display: block;
+    display: flex;
+    flex-direction: column;
 }
 
 .landing-header {
@@ -303,7 +317,8 @@ body {
 /* ============= HEADER SECTION ============= */
 .header {
     text-align: center;
-    margin-bottom: 40px;
+    margin-bottom: 20px;
+    flex-shrink: 0;
 }
 
 .title {
@@ -329,13 +344,14 @@ body {
 .score-display {
     background: linear-gradient(135deg, rgba(255, 214, 232, 0.15), rgba(189, 224, 254, 0.15));
     border: 2px solid rgba(205, 180, 219, 0.3);
-    padding: 20px;
+    padding: 15px;
     border-radius: 15px;
-    margin-bottom: 30px;
+    margin-bottom: 15px;
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: 15px;
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    gap: 10px;
     animation: slideInUp 0.6s ease-out 0.1s both;
+    flex-shrink: 0;
 }
 
 @keyframes slideInUp {
@@ -351,7 +367,7 @@ body {
 
 .score-item {
     text-align: center;
-    padding: 10px;
+    padding: 8px;
     background: rgba(255, 255, 255, 0.6);
     border-radius: 10px;
     transition: all var(--transition-speed) ease;
@@ -366,8 +382,8 @@ body {
 
 .score-label {
     color: var(--text-dark);
-    font-size: 0.85em;
-    margin-bottom: 8px;
+    font-size: 0.75em;
+    margin-bottom: 5px;
     text-transform: uppercase;
     letter-spacing: 1px;
     opacity: 0.7;
@@ -376,20 +392,22 @@ body {
 
 .score-value {
     color: var(--accent-color);
-    font-size: 2em;
+    font-size: 1.8em;
     font-weight: bold;
 }
 
 /* ============= CHALLENGE SECTION ============= */
 .challenge-section {
-    margin-bottom: 30px;
+    margin-bottom: 15px;
     animation: slideInUp 0.6s ease-out 0.2s both;
+    flex: 1;
+    overflow-y: auto;
 }
 
 .challenge-label {
     color: var(--text-dark);
-    font-size: 0.9em;
-    margin-bottom: 12px;
+    font-size: 0.85em;
+    margin-bottom: 8px;
     text-transform: uppercase;
     letter-spacing: 1.5px;
     font-weight: bold;
@@ -399,9 +417,9 @@ body {
     background: linear-gradient(135deg, rgba(255, 214, 232, 0.1), rgba(189, 224, 254, 0.1));
     border: 2px solid rgba(205, 180, 219, 0.3);
     border-radius: 12px;
-    padding: 25px;
-    margin-bottom: 15px;
-    min-height: 120px;
+    padding: 20px;
+    margin-bottom: 12px;
+    min-height: 100px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -427,8 +445,8 @@ body {
 
 .problem-text {
     color: var(--text-dark);
-    font-size: 1.1em;
-    line-height: 1.8;
+    font-size: 1em;
+    line-height: 1.6;
     position: relative;
     z-index: 1;
 }
@@ -449,14 +467,15 @@ body {
 
 /* ============= INPUT SECTION ============= */
 .input-section {
-    margin-bottom: 25px;
+    margin-bottom: 12px;
     animation: slideInUp 0.6s ease-out 0.3s both;
+    flex-shrink: 0;
 }
 
 .input-label {
     color: var(--text-dark);
-    font-size: 0.9em;
-    margin-bottom: 10px;
+    font-size: 0.85em;
+    margin-bottom: 8px;
     text-transform: uppercase;
     letter-spacing: 1.5px;
     font-weight: bold;
@@ -465,13 +484,13 @@ body {
 
 .command-input {
     width: 100%;
-    padding: 15px 18px;
+    padding: 12px 15px;
     background: rgba(255, 255, 255, 0.8);
     border: 2px solid rgba(205, 180, 219, 0.5);
     border-radius: 10px;
     color: var(--text-dark);
     font-family: 'Courier New', monospace;
-    font-size: 1em;
+    font-size: 0.95em;
     outline: none;
     transition: all var(--transition-speed) ease;
     letter-spacing: 0.5px;
@@ -497,24 +516,25 @@ body {
 /* ============= BUTTON STYLES ============= */
 .button-group {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: 15px;
-    margin-bottom: 25px;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 10px;
+    margin-bottom: 12px;
     animation: slideInUp 0.6s ease-out 0.4s both;
+    flex-shrink: 0;
 }
 
 .btn {
-    padding: 14px 20px;
+    padding: 11px 15px;
     border: 2px solid var(--accent-color);
     background: linear-gradient(135deg, rgba(255, 214, 232, 0.2), rgba(189, 224, 254, 0.2));
     color: var(--text-dark);
     font-family: 'Segoe UI', monospace;
-    font-size: 0.95em;
+    font-size: 0.85em;
     font-weight: bold;
     cursor: pointer;
     border-radius: 10px;
     text-transform: uppercase;
-    letter-spacing: 1px;
+    letter-spacing: 0.5px;
     transition: all var(--transition-speed) ease;
     position: relative;
     overflow: hidden;
@@ -542,11 +562,11 @@ body {
 .btn:hover {
     background: linear-gradient(135deg, var(--secondary-color), var(--tertiary-color));
     box-shadow: var(--box-shadow-hover);
-    transform: translateY(-3px);
+    transform: translateY(-2px);
 }
 
 .btn:active {
-    transform: translateY(-1px);
+    transform: translateY(0);
 }
 
 .btn:disabled {
@@ -573,17 +593,18 @@ body {
 
 /* ============= FEEDBACK MESSAGE ============= */
 .feedback {
-    padding: 18px 20px;
+    padding: 12px 15px;
     border-radius: 10px;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
     text-align: center;
     font-weight: bold;
-    font-size: 1.05em;
-    min-height: 60px;
+    font-size: 0.9em;
+    min-height: 40px;
     display: none;
     align-items: center;
     justify-content: center;
     animation: slideInUp 0.4s ease-out;
+    flex-shrink: 0;
 }
 
 .feedback.show {
@@ -616,22 +637,22 @@ body {
     background: rgba(189, 224, 254, 0.2);
     border-left: 4px solid var(--tertiary-color);
     border-radius: 8px;
-    padding: 15px 18px;
+    padding: 10px 12px;
     color: var(--text-dark);
-    font-size: 0.95em;
-    margin-top: 15px;
+    font-size: 0.85em;
+    margin-top: 8px;
     display: none;
     animation: slideInUp 0.4s ease-out;
     position: relative;
-    padding-left: 50px;
+    padding-left: 35px;
     border: 2px solid rgba(189, 224, 254, 0.5);
 }
 
 .hint::before {
     content: '💡';
     position: absolute;
-    left: 15px;
-    font-size: 1.2em;
+    left: 8px;
+    font-size: 1em;
 }
 
 .hint.show {
@@ -641,13 +662,14 @@ body {
 /* ============= CHALLENGE COUNTER ============= */
 .challenge-counter {
     color: var(--text-dark);
-    font-size: 0.95em;
-    margin-top: 20px;
+    font-size: 0.8em;
+    margin-top: 8px;
     text-align: center;
     font-weight: bold;
-    letter-spacing: 1px;
+    letter-spacing: 0.5px;
     animation: slideInUp 0.6s ease-out 0.5s both;
     opacity: 0.8;
+    flex-shrink: 0;
 }
 
 /* ============= LOADING STATE ============= */
@@ -667,10 +689,37 @@ body {
 }
 
 /* ============= RESPONSIVE DESIGN ============= */
-@media (max-width: 768px) {
+
+/* Desktop/Laptop - 16:9 Aspect Ratio */
+@media (min-width: 1024px) {
+    .container {
+        aspect-ratio: 16 / 9;
+        padding: 30px;
+    }
+
+    .landing-page {
+        min-height: auto;
+    }
+
+    .game-page {
+        justify-content: space-between;
+    }
+
+    .title {
+        font-size: 2.2em;
+    }
+
+    .challenge-section {
+        flex: 1;
+        min-height: 150px;
+    }
+}
+
+/* Tablet - Responsive Width */
+@media (min-width: 768px) and (max-width: 1023px) {
     .container {
         padding: 25px;
-        border-radius: 15px;
+        max-width: 100%;
     }
 
     .landing-title {
@@ -686,65 +735,51 @@ body {
     }
 
     .difficulty-selector {
-        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        grid-template-columns: repeat(2, 1fr);
         gap: 15px;
-    }
-
-    .difficulty-card {
-        padding: 20px;
-    }
-
-    .difficulty-icon {
-        font-size: 2.5em;
     }
 
     .score-display {
         grid-template-columns: repeat(2, 1fr);
-        padding: 15px;
+        gap: 8px;
     }
 
     .problem-display {
-        min-height: 100px;
-        padding: 20px;
+        min-height: 90px;
+        padding: 15px;
     }
 
     .problem-text {
-        font-size: 1em;
+        font-size: 0.95em;
     }
 
     .button-group {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 8px;
     }
 
     .btn {
-        padding: 12px 15px;
-        font-size: 0.9em;
+        padding: 10px 12px;
+        font-size: 0.8em;
     }
 
     .command-input {
-        padding: 12px 15px;
-        font-size: 0.95em;
-    }
-
-    .feedback {
-        font-size: 0.95em;
-        min-height: 50px;
-    }
-
-    .hint {
+        padding: 10px 12px;
         font-size: 0.9em;
-        padding: 12px 15px 12px 45px;
     }
 }
 
-@media (max-width: 480px) {
+/* Mobile - Full Width & Auto Height */
+@media (max-width: 767px) {
     body {
         padding: 10px;
     }
 
     .container {
-        padding: 20px;
+        padding: 15px;
         border-radius: 12px;
+        aspect-ratio: auto;
+        max-height: 100%;
     }
 
     .landing-title {
@@ -753,11 +788,15 @@ body {
     }
 
     .landing-header {
-        margin-bottom: 30px;
+        margin-bottom: 25px;
+    }
+
+    .landing-description {
+        font-size: 0.9em;
     }
 
     .title {
-        font-size: 1.5em;
+        font-size: 1.4em;
         margin-bottom: 8px;
     }
 
@@ -766,12 +805,13 @@ body {
     }
 
     .header {
-        margin-bottom: 25px;
+        margin-bottom: 15px;
     }
 
     .difficulty-selector {
         grid-template-columns: 1fr;
         gap: 10px;
+        margin: 25px 0;
     }
 
     .difficulty-card {
@@ -784,14 +824,20 @@ body {
     }
 
     .difficulty-name {
-        font-size: 1.1em;
+        font-size: 1em;
         margin-bottom: 5px;
+    }
+
+    .difficulty-details {
+        font-size: 0.85em;
+        margin-bottom: 10px;
     }
 
     .score-display {
         grid-template-columns: repeat(2, 1fr);
-        gap: 10px;
+        gap: 8px;
         padding: 12px;
+        margin-bottom: 12px;
     }
 
     .score-item {
@@ -799,64 +845,167 @@ body {
     }
 
     .score-label {
-        font-size: 0.75em;
-        margin-bottom: 5px;
+        font-size: 0.7em;
+        margin-bottom: 4px;
     }
 
     .score-value {
-        font-size: 1.5em;
+        font-size: 1.4em;
     }
 
     .challenge-label,
     .input-label {
-        font-size: 0.85em;
+        font-size: 0.8em;
+        margin-bottom: 6px;
     }
 
     .problem-display {
-        padding: 15px;
+        padding: 12px;
         min-height: 80px;
+        margin-bottom: 10px;
     }
 
     .problem-text {
-        font-size: 0.95em;
+        font-size: 0.9em;
+        line-height: 1.5;
     }
 
-    .difficulty-level {
-        font-size: 0.8em;
-        padding: 6px 10px;
-        margin-top: 10px;
+    .challenge-section {
+        margin-bottom: 10px;
+        max-height: 200px;
     }
 
     .command-input {
-        padding: 10px 12px;
+        padding: 10px;
         font-size: 0.9em;
+        margin-bottom: 8px;
     }
 
     .button-group {
         grid-template-columns: 1fr;
-        gap: 10px;
+        gap: 8px;
+        margin-bottom: 10px;
     }
 
     .btn {
-        padding: 11px 12px;
-        font-size: 0.85em;
-        letter-spacing: 0.5px;
+        padding: 10px;
+        font-size: 0.75em;
+        letter-spacing: 0.3px;
     }
 
     .feedback {
-        font-size: 0.9em;
-        padding: 12px 15px;
-        min-height: 45px;
+        padding: 10px 12px;
+        font-size: 0.8em;
+        min-height: 35px;
+        margin-bottom: 8px;
     }
 
     .hint {
-        font-size: 0.85em;
-        padding: 10px 12px 10px 40px;
+        padding: 8px 10px 8px 32px;
+        font-size: 0.75em;
+        margin-top: 6px;
+    }
+
+    .hint::before {
+        font-size: 0.8em;
+        left: 6px;
     }
 
     .challenge-counter {
+        font-size: 0.7em;
+        margin-top: 6px;
+    }
+
+    .difficulty-level {
+        font-size: 0.75em;
+        padding: 5px 8px;
+        margin-top: 8px;
+    }
+}
+
+/* Small Mobile Phones */
+@media (max-width: 480px) {
+    .container {
+        padding: 12px;
+        border-radius: 10px;
+    }
+
+    .landing-title {
+        font-size: 1.5em;
+    }
+
+    .landing-subtitle {
+        font-size: 0.95em;
+    }
+
+    .landing-header {
+        margin-bottom: 20px;
+    }
+
+    .title {
+        font-size: 1.2em;
+    }
+
+    .difficulty-selector {
+        gap: 8px;
+        margin: 20px 0;
+    }
+
+    .difficulty-icon {
+        font-size: 1.8em;
+        margin-bottom: 8px;
+    }
+
+    .difficulty-button {
+        padding: 10px 15px;
+        font-size: 0.8em;
+    }
+
+    .score-display {
+        grid-template-columns: 1fr;
+        gap: 6px;
+        padding: 10px;
+        margin-bottom: 10px;
+    }
+
+    .score-label {
+        font-size: 0.65em;
+    }
+
+    .score-value {
+        font-size: 1.2em;
+    }
+
+    .problem-display {
+        padding: 10px;
+        min-height: 70px;
+    }
+
+    .problem-text {
         font-size: 0.85em;
-        margin-top: 15px;
+    }
+
+    .challenge-section {
+        max-height: 150px;
+    }
+
+    .button-group {
+        grid-template-columns: 1fr;
+    }
+
+    .btn {
+        padding: 9px;
+        font-size: 0.7em;
+    }
+
+    .feedback {
+        padding: 8px 10px;
+        font-size: 0.75em;
+        min-height: 32px;
+    }
+
+    .challenge-counter {
+        font-size: 0.65em;
     }
 }
 
@@ -877,6 +1026,7 @@ body {
     .container {
         box-shadow: none;
         border: 1px solid #ccc;
+        aspect-ratio: auto;
     }
 
     .btn,
