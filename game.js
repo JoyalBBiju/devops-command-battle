@@ -1,6 +1,6 @@
 // =====================================================
-// DevOps Command Battle - Game Logic
-// =====================================================
+// DevOps Command Battle - Game Logic (Updated)
+// ===================================================== */
 
 /**
  * Game State Management
@@ -8,6 +8,7 @@
  */
 const gameState = {
     score: 0,
+    marks: 0,           // New: Simple marking system
     streak: 0,
     maxStreak: 0,
     level: 1,
@@ -18,7 +19,8 @@ const gameState = {
     hintsUsed: 0,
     skipped: 0,
     categoryStats: {},
-    challengeHistory: []
+    challengeHistory: [],
+    questionCount: 0    // New: Track total questions
 };
 
 /**
@@ -30,7 +32,8 @@ const gameConfig = {
     skipPenalty: 0,
     streakMultiplier: 0.5,
     levelUpThreshold: 5,
-    maxLevel: 5
+    maxLevel: 5,
+    marksPerCorrect: 1  // New: 1 mark per correct answer
 };
 
 // =====================================================
@@ -101,7 +104,7 @@ function loadNextChallenge() {
     const hintElement = document.getElementById('hint');
 
     commandInput.value = '';
-    feedback.classList.remove('show', 'success', 'error', 'warning');
+    feedback.classList.remove('show', 'success', 'error');
     hintElement.classList.remove('show');
     if (hintElement) hintElement.style.display = 'none';
 
@@ -121,6 +124,7 @@ function loadNextChallenge() {
     }
 
     gameState.currentChallenge = challengePool[Math.floor(Math.random() * challengePool.length)];
+    gameState.questionCount++;  // Increment question counter
 
     // Update difficulty level based on streak
     updateLevel();
@@ -145,19 +149,17 @@ function displayChallenge() {
     const problemDisplay = document.getElementById('problem');
     const difficultyContainer = document.getElementById('difficultyContainer');
     const challengeCounter = document.getElementById('challengeCounter');
-    const categoryLabel = document.getElementById('categoryLabel');
 
     // Display question
     problemDisplay.textContent = challenge.question;
 
-    // Display difficulty badge with color coding
-    difficultyContainer.innerHTML = `<div class="difficulty-level ${challenge.difficulty.toLowerCase()}">
-        📊 Difficulty: ${challenge.difficulty} | Category: ${challenge.category}
-    </div>`;
+    // REMOVED: Difficulty badge display
+    // Simply hide the difficulty container
+    difficultyContainer.innerHTML = '';
 
-    // Display challenge counter
-    const challengeNum = challenge.id || 'N/A';
-    challengeCounter.textContent = `Challenge #${challengeNum} | Level ${gameState.level} | Streak: ${gameState.streak}`;
+    // Display challenge counter with question number and marks
+    const questionNum = gameState.questionCount;
+    challengeCounter.textContent = `Question #${questionNum} | Marks: ${gameState.marks} | Streak: ${gameState.streak}`;
 }
 
 // =====================================================
@@ -231,10 +233,13 @@ function checkAnswer() {
 }
 
 /**
- * Handle correct answer
+ * Handle correct answer with simple marking system
  */
 function handleCorrectAnswer() {
-    // Calculate score
+    // Add 1 mark for correct answer
+    gameState.marks += gameConfig.marksPerCorrect;
+    
+    // Calculate score for leaderboard purposes
     const baseScore = gameConfig.baseScore;
     const levelBonus = gameState.level * 5;
     const streakBonus = Math.floor(gameState.streak * gameConfig.streakMultiplier);
@@ -265,12 +270,12 @@ function handleCorrectAnswer() {
     gameState.challengeHistory.push({
         challengeId: gameState.currentChallenge.id,
         correct: true,
-        score: totalScore,
+        marks: gameConfig.marksPerCorrect,
         timestamp: new Date()
     });
 
-    // Show feedback
-    const message = `✓ Correct! +${totalScore} points (Base: ${baseScore} + Level: ${levelBonus} + Streak: ${streakBonus})`;
+    // Show feedback - Emphasize marks earned
+    const message = `✓ Correct! +${gameConfig.marksPerCorrect} Mark | Total Marks: ${gameState.marks}`;
     showFeedback(message, 'success');
 
     // Disable input and show next button
@@ -299,11 +304,11 @@ function handleIncorrectAnswer() {
     gameState.challengeHistory.push({
         challengeId: gameState.currentChallenge.id,
         correct: false,
-        score: 0,
+        marks: 0,
         timestamp: new Date()
     });
 
-    showFeedback('✗ Incorrect! Try again or get a hint.', 'error');
+    showFeedback('✗ Incorrect! No marks awarded. Try again or get a hint.', 'error');
     
     const commandInput = document.getElementById('commandInput');
     commandInput.value = '';
@@ -371,7 +376,8 @@ function updateUI() {
     const levelDisplay = document.getElementById('level');
     const accuracyDisplay = document.getElementById('accuracy');
 
-    if (scoreDisplay) scoreDisplay.textContent = gameState.score;
+    // Display marks instead of score
+    if (scoreDisplay) scoreDisplay.textContent = gameState.marks;
     if (streakDisplay) streakDisplay.textContent = gameState.streak;
     if (levelDisplay) levelDisplay.textContent = gameState.level;
     if (accuracyDisplay) {
@@ -397,14 +403,9 @@ function showHint() {
     hintElement.classList.add('show');
     hintElement.style.display = 'block';
 
-    // Deduct score for hint
-    gameState.score = Math.max(0, gameState.score - gameConfig.hintPenalty);
-    gameState.hintsUsed++;
-
     // Disable hint button
     hintBtn.disabled = true;
-
-    updateUI();
+    gameState.hintsUsed++;
 }
 
 /**
@@ -419,7 +420,7 @@ function skipCurrentChallenge() {
         challengeId: gameState.currentChallenge.id,
         correct: false,
         skipped: true,
-        score: 0,
+        marks: 0,
         timestamp: new Date()
     });
 
@@ -529,13 +530,14 @@ function endGame() {
  */
 function showGameStatistics() {
     const stats = {
-        totalScore: gameState.score,
+        totalMarks: gameState.marks,
+        totalCorrect: gameState.correctAnswers,
         totalAttempts: gameState.totalAttempts,
-        correctAnswers: gameState.correctAnswers,
         accuracy: calculateAccuracy(),
         maxStreak: gameState.maxStreak,
         currentStreak: gameState.streak,
         level: gameState.level,
+        questionCount: gameState.questionCount,
         hintsUsed: gameState.hintsUsed,
         skipped: gameState.skipped,
         categoryStats: getAllCategoryStats(),
@@ -551,6 +553,7 @@ function showGameStatistics() {
  */
 function resetGame() {
     gameState.score = 0;
+    gameState.marks = 0;
     gameState.streak = 0;
     gameState.maxStreak = 0;
     gameState.level = 1;
@@ -562,6 +565,7 @@ function resetGame() {
     gameState.skipped = 0;
     gameState.categoryStats = {};
     gameState.challengeHistory = [];
+    gameState.questionCount = 0;
 
     updateUI();
 
@@ -624,7 +628,6 @@ function formatChallenge(challenge) {
     return `
         Challenge #${challenge.id}
         Difficulty: ${challenge.difficulty}
-        Category: ${challenge.category}
         Question: ${challenge.question}
     `;
 }
