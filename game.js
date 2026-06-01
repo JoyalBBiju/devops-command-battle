@@ -1,5 +1,5 @@
 // =====================================================
-// DevOps Command Battle - Game Logic (Updated)
+// DevOps Command Battle - Game Logic (FIXED)
 // ===================================================== */
 
 /**
@@ -20,7 +20,8 @@ const gameState = {
     skipped: 0,
     categoryStats: {},
     challengeHistory: [],
-    questionCount: 0    // New: Track total questions
+    questionCount: 0,    // New: Track total questions
+    answerSubmitted: false  // FIX: Track if answer already submitted for current challenge
 };
 
 /**
@@ -125,6 +126,7 @@ function loadNextChallenge() {
 
     gameState.currentChallenge = challengePool[Math.floor(Math.random() * challengePool.length)];
     gameState.questionCount++;  // Increment question counter
+    gameState.answerSubmitted = false;  // FIX: Reset answer submitted flag for new challenge
 
     // Update difficulty level based on streak
     updateLevel();
@@ -206,8 +208,14 @@ function isAnswerCorrect(userAnswer) {
 
 /**
  * Check user's answer and handle result
+ * FIX: Prevent duplicate score incrementing
  */
 function checkAnswer() {
+    // FIX: Prevent checking answer if already submitted
+    if (gameState.answerSubmitted) {
+        return;
+    }
+
     const commandInput = document.getElementById('commandInput');
     const userAnswer = commandInput.value.trim();
 
@@ -222,6 +230,7 @@ function checkAnswer() {
     }
 
     gameState.totalAttempts++;
+    gameState.answerSubmitted = true;  // FIX: Mark that answer has been submitted
 
     if (isAnswerCorrect(userAnswer)) {
         handleCorrectAnswer();
@@ -467,18 +476,24 @@ function disableGameControls() {
 
 /**
  * Update next button for challenge progression
+ * FIX: Properly handle button state switching
  */
 function updateNextButton() {
     const submitBtn = document.getElementById('submitBtn');
     const originalText = 'Submit Answer';
     
     submitBtn.textContent = 'Next Challenge →';
-    submitBtn.onclick = (e) => {
+    
+    // FIX: Remove old event listeners to prevent duplicates
+    const newButton = submitBtn.cloneNode(true);
+    submitBtn.parentNode.replaceChild(newButton, submitBtn);
+    
+    // FIX: Add single click handler for next challenge
+    newButton.addEventListener('click', (e) => {
         e.preventDefault();
-        submitBtn.textContent = originalText;
-        submitBtn.onclick = null;
+        newButton.textContent = originalText;
         loadNextChallenge();
-    };
+    });
 }
 
 /**
@@ -566,6 +581,7 @@ function resetGame() {
     gameState.categoryStats = {};
     gameState.challengeHistory = [];
     gameState.questionCount = 0;
+    gameState.answerSubmitted = false;  // FIX: Reset answer submitted flag
 
     updateUI();
 
